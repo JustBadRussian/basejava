@@ -3,25 +3,29 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
+
 public class ArrayStorage {
+    private static int ARRAY_SIZE;
+
     private Resume[] storage = new Resume[10000];
 
     void clear() {
         for (int i = 0; i < size(); i++) {
             storage[i] = null;
         }
+        ARRAY_SIZE = 0;
     }
 
     void save(Resume r) {
         storage[size()] = r;
+        ARRAY_SIZE++;
     }
 
     Resume get(String uuid) {
-        for (Resume r : storage) {
-            if (r == null)
-                break;
-            else if (r.uuid.equals(uuid))
-                return r;
+
+        for (int i = 0; i < size(); i++) {
+            if (storage[i].uuid.equals(uuid))
+                return storage[i];
         }
         return null;
     }
@@ -30,6 +34,7 @@ public class ArrayStorage {
         for (int i = 0; i < size(); i++) {
             if (storage[i].uuid.equals(uuid)) {
                 if (size() - i >= 0) System.arraycopy(storage, i + 1, storage, i, size() - i);
+                ARRAY_SIZE--;
                 break;
             }
         }
@@ -43,11 +48,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                return i;
-            }
-        }
-        return storage.length;
+        return ARRAY_SIZE;
     }
 }
